@@ -8,8 +8,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY entrypoint.sh /app/entrypoint.sh
 
-RUN chmod +x /app/entrypoint.sh
+# instalar bash y arreglar CRLF
+RUN apt-get update && apt-get install -y bash && \
+    sed -i 's/\r$//' /app/entrypoint.sh && \
+    chmod +x /app/entrypoint.sh
 
 EXPOSE 502
 
-CMD ["/app/entrypoint.sh"]
+CMD ["/bin/bash", "/app/entrypoint.sh"]
